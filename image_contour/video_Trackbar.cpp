@@ -9,6 +9,26 @@ using namespace std;
 
 int main(int argc, char** argv)
 { 
+    //트랙바 생성 및 크기 조절
+    namedWindow("ControllWindow", WINDOW_NORMAL);
+    resizeWindow("ControllWindow", 380, 300);
+
+    //트랙바 기본 설정 값
+    int LowH = 179;
+    int HighH = 179;
+    int LowS = 0;
+    int HighS = 255;
+    int LowV = 0;
+    int HighV = 255;
+
+    //트랙바 설정 및 최대값
+    createTrackbar("LowH", "ControllWindow", &LowH, 179);
+    createTrackbar("HighH", "ControllWindow", &HighH, 179);
+    createTrackbar("LowS", "ControllWindow", &LowS, 255);
+    createTrackbar("HighS", "ControllWindow", &HighS, 255);
+    createTrackbar("LowV", "ControllWindow", &LowV, 255);
+    createTrackbar("HighV", "ControllWindow", &HighV, 255);
+
     Mat  img_input,img_result, img_hsv;
     Mat frame; // OpenCV에서 가장 기본이 되는 Matrix 구조체(이미지를 읽어 해당 정보를 Mat형태로 변환)
     VideoCapture cap; // 동영상 불러오기
@@ -32,13 +52,11 @@ int main(int argc, char** argv)
 
         Mat S_mask, S_image;
 
-        //Scalar lower = Scalar(LowH, LowS, LowV);
-        //Scalar upper = Scalar(HighH, HighS, HighV);
+        Scalar lower = Scalar(LowH, LowS, LowV);
+        Scalar upper = Scalar(HighH, HighS, HighV);
+ 
 
-        Scalar lower_blue = Scalar(110, 50, 50);
-        Scalar upper_blue = Scalar(130, 255, 255);
-
-        inRange(img_hsv, lower_blue, upper_blue, S_mask);  //이진화 됨
+        inRange(img_hsv, lower, upper, S_mask);  //이진화 됨
         bitwise_and(img_hsv, img_hsv, S_image, S_mask);
 
         //색 채우기
